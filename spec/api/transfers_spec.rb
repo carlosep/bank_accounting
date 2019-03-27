@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe BankAccounting::V1::Transfers do
@@ -14,14 +16,16 @@ describe BankAccounting::V1::Transfers do
       it 'transfer money between accounts' do
         params[:transfer][:amount] = 500
         expect { post '/api/v1/transfers', params: params }
-          .to change(account2, :current_balance).by(+500)
+          .to change { Account.last.current_balance }.by(+500)
+
         expect(response.status).to eq 201
-        expect(response.body).to include('Money transfer was successfull')
+        expect(response.body).to include('"amount":"500.0"')
         expect(Transfer.last.amount).to eq(500)
-        expect(account1.current_balance).to eq(500)
+        expect(Account.first.current_balance).to eq(500)
       end
     end
-
+    # \"amount\":\"500.0\"
+    # \"amount\": \"500.0\"
     context 'having an account with insufficient funds' do
       it 'cancels money transfer' do
         params[:transfer][:amount] = 1500
