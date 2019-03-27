@@ -24,8 +24,7 @@ describe BankAccounting::V1::Transfers do
         expect(Account.first.current_balance).to eq(500)
       end
     end
-    # \"amount\":\"500.0\"
-    # \"amount\": \"500.0\"
+
     context 'having an account with insufficient funds' do
       it 'cancels money transfer' do
         params[:transfer][:amount] = 1500

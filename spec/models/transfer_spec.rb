@@ -1,13 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Transfer, type: :model do
+  let(:source) { build(:account) }
+  let(:destination) { build(:account) }
+
   describe '#update_accounts_balances!' do
     context 'successfully' do
       it "updates accounts' balances" do
-        source = build(:account)
-        destination = build(:account)
-        transfer = build(:transfer, amount: 1000, source_account: source, destination_account: destination)
-        transfer.update_accounts_balances!
+        transfer = build(:transfer, source_account: source, destination_account: destination)
+        transfer.send(:update_accounts_balances!)
         expect(source.current_balance).to eq 0
         expect(destination.current_balance).to eq 2000
       end
@@ -15,7 +16,6 @@ RSpec.describe Transfer, type: :model do
   end
 
   describe '#enough_funds?' do
-    let(:source) { build(:account) }
     context 'source account has enough funds' do
       it 'returns true' do
         transfer = build(:transfer, amount: 1000.00, source_account: source)
