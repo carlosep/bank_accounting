@@ -4,17 +4,17 @@ describe BankAccounting::V1::Transfers do
   describe 'POST /api/v1/transfers' do
     let(:account1) { create(:account) }
     let(:account2) { create(:account) }
+    let(:params) do
+      { transfer: { source_account_id: account1.id,
+                    destination_account_id: account2.id,
+                    amount: 0 } }
+    end
 
     context 'successfully' do
-      let(:params) do
-        { transfer: { source_account_id: account1.id,
-                      destination_account_id: account2.id,
-                      amount: 0 } }
-      end
       it 'transfer money between accounts' do
         params[:transfer][:amount] = 500
         expect { post '/api/v1/transfers', params: params }
-          .to change(account2, current_balance).by(+500)
+          .to change(account2, :current_balance).by(+500)
         expect(response.status).to eq 201
         expect(response.body).to include('Money transfer was successfull')
         expect(Transfer.last.amount).to eq(500)

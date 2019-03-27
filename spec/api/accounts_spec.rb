@@ -7,11 +7,9 @@ describe BankAccounting::V1::Accounts do
   describe 'GET /api/v1/accounts/:id/balance' do
     context 'successfully' do
       it 'displays account balance' do
-        get "/api/v1/accounts/#{account1}/balance"
+        get "/api/v1/accounts/#{account1.id}/balance"
         expect(response.status).to eq 200
-        expect(response.body).to include('Source account has insufficient funds')
-        expect(account1.current_balance).to eq(1000)
-        expect(account2.current_balance).to eq(1000)
+        expect(response.body).to include(account1.current_balance.to_s)
       end
     end
     context 'having an inexistent account' do
