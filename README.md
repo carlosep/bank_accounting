@@ -4,8 +4,11 @@ Simple API to execute money transfers
 
 ### Prerequisites
 
-* ruby '2.5.1'
-* rails '~> 5.2.2'
+```
+ruby '2.5.1'
+rails '~> 5.2.2'
+bundler '2.0.1'
+```
 
 ### Installing
 
@@ -15,64 +18,41 @@ Clone this project:
 git clone git@github.com:carlosep/bank_accounting.git
 ```
 
-And repeat
+Install bundler if you do not have it installed:
 
 ```
-until finished
+gem install bundler
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+Intall gem dependencies with bundler, build the database and start the server:
 
 ```
-Give an example
+bundle
+rails db:setup
+rails server
 ```
+The application should be up and running.
 
-### And coding style tests
+## Usage
 
-Explain what these tests test and why
+Accounts and Users must be created through console commands.
 
 ```
-Give an example
+Account.create!(name: 'Account name', current_balance: 1000.00) # current_balance is not mandatory
+User.create!(emai: 'user@example.com')
 ```
+It is necessary to create a user because for every request it will be needed a user's authentication token
 
-## Deployment
+**Available endpoints:**
 
-Add additional notes about how to deploy this on a live system
+* POST /api/v1/transfers?token=YOUR_TOKEN -> Transfers money between accounts  
+  * params:  
+    * source_account_id -> Paying account, must have enough funds for the transfer.
+    * destination_account_id -> Receiveing account
+    * amount -> Ammount of money to be transfered, must be lower than the source's current balance
+  * Returns newly created transfer if everything goes well
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* GET /api/v1/accounts/:id/balance?token=[YOUR TOKEN] -> Returns current balance of account
+  * params:
+    * id -> Account Id which is going to be checked. Account must exist.
+  * Returns the current balance of the pointed account
