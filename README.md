@@ -56,3 +56,7 @@ It is necessary to create a user because for every request it will be needed a u
   * params:
     * id -> Account Id which is going to be checked. Account must exist.
   * Returns the current balance of the pointed account
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/carlosep/bank_accounting.
