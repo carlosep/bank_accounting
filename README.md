@@ -41,7 +41,7 @@ Accounts and Users must be created through console commands.
 Account.create!(name: 'Account name', current_balance: 1000.00) # current_balance is not mandatory
 User.create!(emai: 'user@example.com')
 ```
-It is necessary to create a user because for every request it will be needed a user's authentication token
+It is necessary to create a user because in each request an authentication token will be required.
 
 **Available endpoints:**
 
