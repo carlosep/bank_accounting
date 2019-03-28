@@ -7,6 +7,7 @@ module BankAccounting
       resource :transfers do
         desc 'Transfers money between accounts'
         post do
+          authenticate!
           transfer = Transfer.new(params[:transfer])
           if transfer.enough_funds?
             present transfer if transfer.save!
